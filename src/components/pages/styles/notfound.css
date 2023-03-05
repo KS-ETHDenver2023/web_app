@@ -1,0 +1,42 @@
+.notfound{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    flex-direction: column;
+    background-color: #0b0b0b;
+}
+
+.nfbtn{
+    background-color: #ac9068;
+    color: white;
+    font-size: 25px;
+    padding: 20px 40px;
+    border-radius: 50px;
+    border: none;
+    text-transform: uppercase;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.nfbtn:hover{
+    background-color: #eaddca;
+    color: black;
+    transform: scale(1.1);
+}
+
+text{
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.nfbtn a {
+    color: rgb(253, 253, 253);
+    text-decoration: none;
+}
+
+.nfbtn:hover a{
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+}
