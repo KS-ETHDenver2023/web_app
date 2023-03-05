@@ -226,9 +226,9 @@ function ZKbob(){
                     <h2>Info</h2>
                     <p>In order to perform a direct deposit you have to <b>approve + desposit</b> some funds</p>
                     <div className="main__listing">
-                        <p>1. First time : Approve zkOwl DirectDeposit smart contract to transfer BOB</p>
-                        <p>1. Other : Check zkOwl allowance balance (increase if necessary) and desposited funds</p>
-                        <p>2. Deposit BOB tokens into zkOwl smart contract</p>
+                        <p>1. First time : Approve Alice Ring DirectDeposit smart contract to transfer BOB</p>
+                        <p>1. Other : Check Alice Ring allowance balance (increase if necessary) and desposited funds</p>
+                        <p>2. Deposit BOB tokens into Alice Ring smart contract</p>
                         <p>3. Perform Direct Deposit</p>
                         <p>4. Come back here ✨</p>
                     </div>
