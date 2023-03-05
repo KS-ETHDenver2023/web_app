@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { fetchBalance, getAccount } from '@wagmi/core';
-import BigNumber from 'bignumber.js';
 import zkLogo from './ZKBob.png';
 import bobToken from './BOBcoin.png';
 import directDepositABI from '../../abi/DirectDeposit.json';
@@ -37,7 +36,7 @@ function ZKbob(){
             address: _addressDirectDeposit,
             abi: directDepositABI,
             functionName: 'directDeposit',
-            args: [new BigNumber(amount).multipliedBy(new BigNumber(10).pow(18)).toString(),receiver,fallbackreciever],
+            args: [amount.toString(),receiver,fallbackreciever],
     })
 
     const{ write } = useContractWrite(config)
@@ -47,7 +46,7 @@ function ZKbob(){
             address: _addressZkBobSepolia, 
             abi: zkbobABI,
             functionName: 'approve',
-            args: [_addressDirectDeposit,new BigNumber(approveAmount).multipliedBy(new BigNumber(10).pow(18)).toString()],
+            args: [_addressDirectDeposit,approveAmount.toString()],
     })
 
     const {write: approveWrite}  = useContractWrite(configB)
@@ -58,7 +57,7 @@ function ZKbob(){
         address: _addressZkBobSepolia, 
         abi: zkbobABI,
         functionName: 'increaseAllowance',
-        args: [_addressDirectDeposit, new BigNumber(increaseAllowanceAmount).multipliedBy(new BigNumber(10).pow(18)).toString()],
+        args: [_addressDirectDeposit, increaseAllowanceAmount.toString()],
     })
 
     const {write: increaseAllowanceWrite}  = useContractWrite(configC)
@@ -69,7 +68,7 @@ function ZKbob(){
         address: _addressDirectDeposit, 
         abi: directDepositABI,
         functionName: 'despositBob',
-        args: [new BigNumber(depositAmount).multipliedBy(new BigNumber(10).pow(18)).toString()],
+        args: [depositAmount.toString()],
     })
 
     const {write: depositBobWrite}  = useContractWrite(configD)
