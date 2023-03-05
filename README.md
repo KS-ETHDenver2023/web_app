@@ -25,7 +25,11 @@ In this section you will learn more about our **Alice's ring project** and the "
 
 **2. Generate Proof of Solvancy**
 
--> need to be integrated
+Follow the steps on dedicated page.
+
+**2. Check Proof of Solvancy**
+
+Follow the steps on dedicated page.
 
 **3. zkBob - Direct Deposit 💸** 
 

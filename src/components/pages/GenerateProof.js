@@ -20,6 +20,7 @@ function GenerateProof(){
     const [ready, setReady] = useState(false);
     const [verifierAddress, setVerifierAddress] = useState("");
     const [text, setText] = useState("->[OUTPUT]");
+    const [senderKey, setSenderKey] = useState("");
 
     //Verifier
     const [addresses, setAddresses] = useState([]);
@@ -33,10 +34,14 @@ function GenerateProof(){
 
     async function callGeneration(){
         setText("Generating...");
-        const points = await retriveAll(covalentChain,chain.name, token, amountRequired, nbOfParticipants);
+        const response = await retriveAll(covalentChain,chain.name, token, amountRequired, nbOfParticipants, account.address);
+        const points = response[0];
+        const senderKey = response[1];
         console.log("Generating...");
         console.log(points);
         setText(points);
+        setSenderKey(senderKey);
+
     }
 
     const { config } = usePrepareContractWrite({
@@ -149,7 +154,10 @@ function GenerateProof(){
                     <button disabled={!ready}>Generate</button>
                 </form>
                 <label>Your generated anonimity set : (copy and save it for step 2)</label>
-                <input type="text" value={text} onChange={(e) => setText(e.target.value)} />
+                <input type="text" value={text}/>
+                <label>You generated your points (copy and save it for step 2)</label>
+                <input type="text" value={senderKey}/>
+                
             </div>
             <div className="main__listing">
             <h2>2. Download Proof Generator</h2>

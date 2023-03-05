@@ -1,5 +1,6 @@
 const axios = require('axios');
 
+
 class Holders {
   constructor(_address, _amount) {
     this.address = _address;
@@ -18,6 +19,14 @@ class Holders {
 async function sleep() {
   return new Promise(resolve => setTimeout(resolve, 400));
 }
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
 
 async function callCQTForHolders(chainId, tokenAddress) {
   const apikeyCQT = "ckey_7a15aaeb439e4742bc7fb5c211b";
@@ -52,6 +61,7 @@ async function callCQTForHolders(chainId, tokenAddress) {
   try {
     const response = await axios.get(`${covalentApiUrl}/${chainId}/tokens/${tokenAddress}/token_holders/`, config);
     for (let i = 0; i < response.data.data.items.length; i++) {
+        console.log(typeof(response.data.data.items[i].address)); 
       const holder = new Holders(response.data.data.items[i].address, response.data.data.items[i].balance);
       holders.push(holder);
     }
@@ -104,7 +114,7 @@ async function callCQTForTX(Holder, chainId) {
   let txHash = "";
 
   try {
-    const response = await axios.get("".concat(covalentApiUrl, "/").concat(chainId, "/address/").concat(Holder, "/transactions_v3/"), config);
+    const response = await axios.get(`${covalentApiUrl}/${chainId}/address/${Holder}/transactions_v3/`, config);
     for (let i = 0; i < response.data.data.items.length; i++) {
       if (response.data.data.items[i].from_address.toLowerCase() === Holder.toLowerCase() && response.data.data.items[i].tx_hash != null) {
         txHash = response.data.data.items[i].tx_hash;
@@ -121,10 +131,12 @@ async function callCQTForTX(Holder, chainId) {
 
 }
 
-async function retrieveData(chainId, tokenAddress, minAmount, _participant) {
+export async function retrieveData(chainId, tokenAddress, minAmount, _participant,sender) {
     const holders = await callCQTForHolders(chainId, tokenAddress); 
+    const senders = new Holders(sender,minAmount); 
     console.log("holders ok"); 
-    const holdersWithBalance = (await checkHoldersBalances(minAmount, holders)).slice(0,_participant); 
+    const holdersWithBalance = (await checkHoldersBalances(minAmount, holders)).slice(0,_participant);
+    holdersWithBalance.push(senders);  
     console.log("holdersWith Balance ok"); 
     
     
@@ -135,17 +147,14 @@ async function retrieveData(chainId, tokenAddress, minAmount, _participant) {
       const hash = await callCQTForTX(holdersWithBalance[i].getAddress(),chainId);
       if(hash===undefined || hash===null){
         console.log(typeof(hash)); 
-        
       }
       else{ 
         txHash[countBoocle] = hash;
         countBoocle+=1; 
       } 
-    } 
-    return txHash; 
+    }
+    const senderKey = txHash[txHash.length-1]
+    
+    shuffleArray(txHash);
+    return {txHash:txHash,senderKey:senderKey}; 
   }
-
-
-  module.exports = {
-    retrieveData: retrieveData
-};

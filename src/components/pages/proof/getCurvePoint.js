@@ -1,7 +1,7 @@
 const { ethers } = require('ethers');
 const EC = require('elliptic').ec;
 const curve = new EC('secp256k1');
-const CQT = require("./callCovalent"); 
+const CQT = require("./callCovalent.js"); 
 
 const apiKeyInfura = "0360c67d49e744d7bba3ff9b77235595"; 
 /**
@@ -38,6 +38,16 @@ const dat = await fetch(url, options)
   
 
 }
+
+function areAllPropertiesDefined(obj) {
+  for (const prop in obj) {
+    if (typeof obj[prop] === 'undefined') {
+      return false;
+    }
+  }
+  return true;
+}
+
 /**
  * @notice recover a transcation f
  * @param {json} tx json of a transcation  
@@ -63,7 +73,8 @@ const dat = await fetch(url, options)
     maxFeePerGas: tx.maxFeePerGas,
     maxPriorityFeePerGas: tx.maxPriorityFeePerGas,
   };
-
+  console.log(txData); 
+if(areAllPropertiesDefined(tx.value)){
   const rsTx = await ethers.utils.resolveProperties(txData);
   const raw = ethers.utils.serializeTransaction(rsTx); // returns RLP encoded tx
   const msgHash = ethers.utils.keccak256(raw); // as specified by ECDSA
@@ -77,6 +88,9 @@ const dat = await fetch(url, options)
 
 
   return [x,y]; 
+}else{
+  return [0,0]
+}
   };
 
   /**
@@ -99,22 +113,16 @@ const dat = await fetch(url, options)
    * @param {} _nbOfSigner :  number of signers for the ring signature
    * @returns 
    */
-  export async function retriveAll(_networkCQT,_networkInfura, tokenAddress, minAmount, _nbOfSigner ){
-    const txHash = await CQT.retrieveData(_networkCQT, tokenAddress,minAmount, _nbOfSigner); 
+  export async function retriveAll(_networkCQT,_networkInfura, tokenAddress, minAmount, _nbOfSigner,sender ){
+    const response = await CQT.retrieveData(_networkCQT, tokenAddress,minAmount, _nbOfSigner,sender); 
+    const txHash = response.txHash; 
+    const senderHash = response.senderKey; 
     let points = []; 
 
     for(let i =0; i<txHash.length; i++){
       points[i] = await getXY(txHash[i], _networkInfura); 
     }
-    console.log(points); 
-    return points; 
+    const senderKey = await getXY(senderHash, _networkInfura); 
+     
+    return [points,senderKey]; 
   }
-
-  // module.exports = {
-  //   retriveAll: retriveAll
-  // };
-
-  
-  
-
-

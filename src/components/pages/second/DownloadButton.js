@@ -2,10 +2,10 @@ import React from 'react';
 
 function DownloadButton() {
   const handleDownload = () => {
-    const fileUrl = 'https://example.com/myfile.exe';
+    const fileUrl = 'https://github.com/KS-ETHDenver2023/ring_signature/raw/main/dist/signator';
     const link = document.createElement('a');
     link.href = fileUrl;
-    link.setAttribute('download', 'myfile.exe');
+    link.setAttribute('download', 'signator');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
