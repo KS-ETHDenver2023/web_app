@@ -75,10 +75,12 @@ Go to app.zkBob UI and click on  **Create ZkAccount**
  - [wagmi](https://wagmi.sh/)
 - [Infura RPC provider](https://www.infura.io/)
 - [zkBob ](https://www.zkbob.com/)
+- [Covalent](https://www.covalenthq.com/)
 
 Thanks to the large number of chains supported, we first used infura's RPCs for Polygon and Ethereum networks (mainnet&testnet).
 The infura and truffle tools were also useful for the deployment of multi-chain smart contracts.
-For Scroll and zkSync networks we used the RPCs provided in their respective documentations.
+For Scroll and zkSync networks we used the RPCs provided in their respective documentations.  
+We used Covalent solution and API to generate the anonymity set used for the ring signature implementation.
 
 ## Supported networks 🛰️
 
